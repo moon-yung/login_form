@@ -1,7 +1,10 @@
 from database_handler import register,login, get_acc_info, update_first_name,update_last_name,update_password,update_username,create_table
 import datetime 
 import pwinput # import password input ******
-import os
+import os # for clear display
+import hashlib # hide password
+
+
 
 def loginRights(username, password):
     while True:
@@ -33,12 +36,13 @@ def loginRights(username, password):
 
             elif choice == "4":
                 while True:
-                    new_pass = input("Enter new password: ")
-                    if len(new_pass) <=8 :
+                    new_password = input("Enter new password: ")
+                    if len(new_password) <=8 :
                         print("Password must be 8 characters up")
                         print()
                         continue            
                     else:
+                        new_pass = hashlib.sha256(new_password.encode('utf-8')).hexdigest()# encryption
                         update_password(username, password, new_pass)
                         print(f"Password changed to {new_pass}!")
                         break
@@ -66,7 +70,7 @@ def main():
                 print("R E G I S T E R")
                 print("-" *30)
                 first = input("\nFirst Name: ").title()
-                os.system('cls')
+                os.system('cls') # to clear display of last input
                 last = input("\nLast Name: ").title()
                 os.system('cls')
                 un = input("\nUsername: ")
@@ -74,12 +78,13 @@ def main():
                 current_date = datetime.date.today()                                    
                 
                 while True:
-                    pw = input("\nPassword: ")
-                    if len(pw) <=8 :
+                    pword = input("\nPassword: ")
+                    if len(pword) <= 8 :
                         print("Password must be 8 characters up")
                         print()
                         continue                     
                     else:
+                        pw = hashlib.sha256(pword.encode('utf-8')).hexdigest() #encryption
                         os.system('cls')
                         print("\nRegistration Details\n")
                         print(f"First Name: {first}")
@@ -106,7 +111,8 @@ def main():
                 print("-" *30)
                 username = input("Username: ")
                 # python convert user input to asterisk
-                password = pwinput.pwinput(prompt ="Password: ", mask="*")
+                passwordlogin = pwinput.pwinput(prompt ="Password: ", mask="*")
+                password = hashlib.sha256(passwordlogin.encode('utf-8')).hexdigest() #encryption
                 print()
                 if login(username,password):
                     print(f"{username}, You are now logged in!")
