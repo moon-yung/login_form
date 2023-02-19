@@ -44,7 +44,7 @@ def loginRights(username, password):
                     else:
                         new_pass = hashlib.sha256(new_password.encode('utf-8')).hexdigest()# encryption
                         update_password(username, password, new_pass)
-                        print(f"Password changed!")
+                        print(f"Password changed to {new_password}!")
                         break
 
             elif choice == "5":
